@@ -1,0 +1,17 @@
+name: 05 - 1 - filter activity types
+
+on:
+    pull_request:
+        types: 
+            -   opened
+            -   synchronize
+        branches:
+            -   main
+    
+jobs:
+    echo:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: 05 - 1 - event filter and activity types
+                run: |
+                    echo "this is event filter and activity type"
