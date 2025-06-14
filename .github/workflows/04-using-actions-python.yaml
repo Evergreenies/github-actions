@@ -1,0 +1,19 @@
+name: 04-python-fastapi
+
+on:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: 04-using-actions/app
+        steps:
+            -   uses: actions/checkout@v4
+            -   uses: actions/setup-python@v5
+                with:
+                    python-version: '3.13'
+            -   uses: pip install -r requirements.txt
+            # -   run: uvicorn "main:app"
+              
