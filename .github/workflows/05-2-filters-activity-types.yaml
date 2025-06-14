@@ -1,0 +1,16 @@
+name: 05 - 1 - filter activity types
+
+on:
+    pull_request:
+        branches:
+            -   main
+        types:
+            -   closed
+
+jobs:
+    echo:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: filter activity type closed testing on main branch
+                run: |
+                    echo "closed PR"
