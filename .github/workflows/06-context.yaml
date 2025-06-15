@@ -1,5 +1,7 @@
 name: 06 - context
 
+run-name: "my custom workflow run mame ${{ runner.os }}"
+
 on:
     push:
     workflow_dispatch:
