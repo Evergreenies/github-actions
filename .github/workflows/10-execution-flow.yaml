@@ -18,6 +18,7 @@ jobs:
                     echo "lint and build project"
     unit-test:
         runs-on: ubuntu-latest
+        continue-on-error: true
         steps:
             -   name: running unit tests
                 run: |
@@ -32,7 +33,6 @@ jobs:
             - lint-build
             - unit-test
         runs-on: ubuntu-latest
-        continue-on-error: true
         steps:
             -   name: deploying to nonprod
                 run: |
