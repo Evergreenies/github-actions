@@ -1,4 +1,4 @@
-name: 09 - Using Functions
+name: 09 - using functions
 
 on:
     pull_request:
@@ -11,6 +11,9 @@ jobs:
             -   name: exit with non zero code
                 run: |
                     exit(1)
+            -   name: sleep for 20 seconds
+                run: |
+                    echo sleep 20
             -   name: I will be skipped
                 if: success()
                 run: |
