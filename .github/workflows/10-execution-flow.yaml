@@ -1,0 +1,63 @@
+name: 10 - controlling the execution flow
+
+run-name: 10 - controlling the execution flow
+
+on:
+    workflow_dispatch:
+        inputs:
+            pass-unit-test:
+                type: boolean
+                default: false
+
+jobs:
+    lint-build:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: lint and build project
+                run: |
+                    echo "lint and build project"
+    unit-test:
+        runs-on: ubuntu-latest
+        steps:
+            -   name: running unit tests
+                run: |
+                    echo "running unit tests"
+            -   name: failing test
+                if: inputs.pass-unit-test == false
+                run: |
+                    echo "pass-input-test is set to false"
+                    exit(1)
+    deploy-nonprod:
+        needs: 
+            - lint-build
+            - unit-test
+        runs-on: ubuntu-latest
+        steps:
+            -   name: deploying to nonprod
+                run: |
+                    echo "deploying to nonprod"
+    e2e-tests:
+        needs: deploy-nonprod
+        runs-on: ubuntu-latest
+        steps:
+            -   name: running e2e tests
+                run: |
+                    echo "running e2e tests"
+    load-tests:
+        needs: deploy-nonprod
+        runs-on: ubuntu-latest
+        steps:
+            -   name: running load tests
+                run: |
+                    echo "running load tests"
+    deploy-prod:
+        needs: 
+            - e2e-tests
+            - load-tests
+        runs-on: ubuntu-latest
+        steps:
+            -   name: deploy prod
+                run: |
+                    echo "deploying to prod"
+    
+
