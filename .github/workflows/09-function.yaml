@@ -8,12 +8,12 @@ jobs:
     echo1:
         runs-on: ubuntu-latest
         steps:
-            -   name: exit with non zero code
-                run: |
-                    exit(1)
             -   name: sleep for 20 seconds
                 run: |
                     echo sleep 20
+            -   name: exit with non zero code
+                run: |
+                    exit(1)
             -   name: I will be skipped
                 if: success()
                 run: |
