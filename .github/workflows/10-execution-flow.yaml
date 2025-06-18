@@ -32,6 +32,7 @@ jobs:
             - lint-build
             - unit-test
         runs-on: ubuntu-latest
+        continue-on-error: true
         steps:
             -   name: deploying to nonprod
                 run: |
