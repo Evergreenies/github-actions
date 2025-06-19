@@ -29,7 +29,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
+      - name: download cached deps
+        uses: actions/cache@v4
+        id: cache
+        if: ${{ inputs.use-cache }}
+        with:
+          path: 13-caching/react-app/node-modules
+          key: deps-node-modules-${{ hashFiles('13-caching/react-app/package-lock.json') }}
       - name: install deps
+        if: setps.cache.outputs.cache-hit != 'true'
         run: |
           npm ci
       - name: testing
