@@ -1,4 +1,6 @@
 FROM python:alpine3.21
+
+RUN mkdir /uv /uvx
 COPY ghcr.io/astral-sh/uv:alpine3.21 /uv /uvx /bin/
 
 WORKDIR /app
