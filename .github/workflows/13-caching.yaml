@@ -1,0 +1,32 @@
+name: 13 - using caching
+
+on:
+  workflow_dispatch:
+    inputs:
+      use-cache:
+        description: whether to execut step
+        type: boolean
+        default: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    default:
+      run:
+        working-directory: 13-caching/react-app
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+      - name: install deps
+        run: |
+          npm ci
+      - name: testing
+        run: npm run test
+      - name: building
+        run: npm run build
+      - name: deploying to non-prod
+        run: echo "deploying to non-prod"
