@@ -12,6 +12,8 @@ COPY uv.lock .
 RUN python -V
 RUN uv sync --locked
 
+ENV PATH="/app/.venv/bin:$PATH"
+
 COPY . .
 
 CMD [ "uv", "run", "/app/main.py"]
