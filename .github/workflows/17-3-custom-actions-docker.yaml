@@ -4,8 +4,14 @@ on:
     workflow_dispatch:
         inputs:
             url:
-                type: string
+                type: choice
+                options:
+                    - https://www.google.com
+                    - https://unrechable-site-for-test-ping-url.com 
                 default: 'https://www.google.com'
+            max_trials:
+                description: maximum trial until action fails
+                default: '5'
 
 jobs:
     ping-url:
@@ -17,3 +23,4 @@ jobs:
                 uses: ./.github/actions/docker-ping-url
                 with:
                     url: ${{ inputs.url }}
+                    max_trials: ${{ inputs.max_trials }}
