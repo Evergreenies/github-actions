@@ -11,17 +11,22 @@ on:
                 options:
                     - dev
                     - prod
+
+env:
+    working-directory: 17-custom-actions/react-app
+
 jobs:
     build:
         runs-on: ubuntu-latest
-        env:
-            working-directory: 17-custom-actions/react-app
+        defaults:
+            run:
+                working-directory: ${{ env.working-directory }}
         steps:
             -   name: checkout code
                 uses: actions/checkout@v4
             -   name: setup node and npm deps
                 id: setup-deps
-                uses: ./github/actions/composite-cache-deps
+                uses: ./.github/actions/composite-cache-deps
                 with:
                     node-version: 22.x
                     working-dir: ${{ env.working-directory }}
