@@ -2,7 +2,7 @@ FROM python:alpine3.21
 
 RUN mkdir /uv 
 RUN mkdir /uvx
-COPY ghcr.io/astral-sh/uv:alpine3.21 /uv /uvx /bin/
+COPY ghcr.io/astral-sh/uv:alpine3.21 /uv /bin/
 
 WORKDIR /app
 
