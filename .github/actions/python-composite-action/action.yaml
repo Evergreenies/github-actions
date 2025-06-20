@@ -7,6 +7,10 @@ inputs:
     description: name to greet
     required: true
 
+outputs:
+  greeting_time:
+    description: output time in string from
+
 runs:
   using: composite
   steps:
