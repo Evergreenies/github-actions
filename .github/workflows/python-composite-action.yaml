@@ -1,7 +1,7 @@
 name: test python composite action
 
 on:
-  push:
+  # push:
   workflow_dispatch:
 
 jobs:
