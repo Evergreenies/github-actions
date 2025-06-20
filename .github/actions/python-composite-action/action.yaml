@@ -21,7 +21,9 @@ runs:
         import sys
         import datetime
         name = "${{ inputs.name }}"
+        github_output = "$GITHUB_OUTPUT"
         print(f"Hello from composite actions: {name}")
+        print(f"{github_output=}")
         print(f"greeting_time={datetime.datetime.now()}", file=open(os.environ['GITHUB_OUTPUT'], 'a'))
       env:
         GREET_NAME: ${{ inputs.name }}
