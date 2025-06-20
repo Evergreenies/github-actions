@@ -13,6 +13,7 @@ runs:
     - name: run a python script
       shell: python
       run: |
+        import os
         import sys
         import datetime
         name = "${{ inputs.name }}"
