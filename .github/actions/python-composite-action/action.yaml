@@ -1,0 +1,21 @@
+name: composite action example using python
+
+description: a simple composite action using python
+
+inputs:
+  name:
+    description: name to greet
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: run a python script
+      shell: python
+      run: |
+        import sys
+        name = "${{ inputs.name }}"
+        print(f"Hello from composite actions: {name}")
+        print(f"greeting_time={sys.argv[1]}", file=open(os.environ['GITHUB_OUTPUT'], 'a'))
+      env:
+        GREET_NAME: ${{ inputs.name }}
