@@ -1,0 +1,93 @@
+name: GitHub Actions with Containers
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  # Job 1: Run all steps within a specified container image
+  container-job:
+    runs-on: ubuntu-latest
+    container: # Define the container for this job
+      image: node:18-alpine # Use an official Node.js image with Alpine Linux
+      # Optional: Set credentials for private registries
+      # credentials:
+      #   username: ${{ github.actor }}
+      #   password: ${{ secrets.GITHUB_TOKEN }}
+      # Optional: Map ports if your container runs a service
+      # ports:
+      #   - 8080:80
+      # Optional: Mount volumes for persistence or shared access
+      # volumes:
+      #   - my_docker_volume:/path/in/container
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # This action will run inside the container
+
+      - name: Check Node.js version (from container)
+        run: node -v # This command runs inside the 'node:18-alpine' container
+
+      - name: Install dependencies (inside container)
+        run: npm install
+
+      - name: Run a script (inside container)
+        run: echo "Hello from inside the Node.js container!"
+
+  #   # Job 2: Using a custom Docker container action
+  #   # (Similar to the Python action we discussed earlier)
+  #   docker-action-job:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #       - name: Checkout code
+  #         uses: actions/checkout@v4
+
+  #       - name: Run a custom Docker action (from a local Dockerfile)
+  #         # Assuming you have a 'my-docker-action' directory with action.yml and Dockerfile
+  #         # This uses the Docker image defined in the action's Dockerfile
+  #         uses: ./.github/actions/my-docker-action
+  #         with:
+  #           input_message: "This message is passed to my custom Docker action."
+
+  # Job 3: Using Service Containers (e.g., for a database)
+  service-container-job:
+    runs-on: ubuntu-latest
+    services: # Define services that will run alongside the job
+      # Service container for PostgreSQL database
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432 # Map port from container to host for access from job steps
+        options: >- # Docker run options
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Wait for PostgreSQL service to be ready
+        # Uses a custom action to wait for the service's health check to pass
+        # This is important to ensure the database is fully ready before tests try to connect
+        uses: CidadeDeMacaubas/wait-for-service@v1
+        with:
+          host: localhost # Connect to the service via localhost on the runner
+          port: 5432
+          timeout: 60 # seconds
+
+      - name: Connect to PostgreSQL and run query
+        # This command runs on the runner's host OS (ubuntu-latest),
+        # but connects to the PostgreSQL container running as a service
+        run: |
+          # Install psql client if not already available on the runner
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          psql -h localhost -p 5432 -U user -d testdb -c "SELECT 1;"
+          echo "Successfully connected to PostgreSQL service!"
