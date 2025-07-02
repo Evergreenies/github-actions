@@ -1,0 +1,23 @@
+name: Python CI with Caching
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04-using-actions/app
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup python
+        uses: actions/setup-python@v4
+
+      - name: install deps
+        run: |
+          python -m pip install --upgrade pip 
+          pip install -r requirements.txt
