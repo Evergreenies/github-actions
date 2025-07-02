@@ -18,6 +18,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref == 'refs/heads/main' && 'production' || 'default' }}
   cancel-in-progress: ${{ github.ref == 'refs/heads/main' }} # Only cancel if it's a main branch push
 
+defaults:
+  run:
+    working-directory: 04-using-actions/app
 jobs:
   # -------------------------------------------------------------------------
   # 1. CI & Initial Security Checks (Runs on every PR/Push)
@@ -298,4 +301,3 @@ jobs:
           echo "Smoke tests passed."
       - name: Update Monitoring Dashboards (simulated)
         run: echo "Updating monitoring dashboards with new deployment info..."
-
